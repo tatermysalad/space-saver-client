@@ -53,10 +53,11 @@ function Space() {
   const roomsUpdated = rooms.map((room) => {
     return {
       name: room.name,
-      nextAvailable: '28/11/23',
+      nextAvailable: new Date().toLocaleDateString('en-AU'),
       capacity: room.capacity,
     };
   });
+
 
   const roomsCount = roomsUpdated.length;
 
