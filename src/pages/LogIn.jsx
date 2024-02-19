@@ -93,6 +93,7 @@ function LogIn() {
                   id="password"
                   label="password"
                   variant="outlined"
+                  type="password"
                   fullWidth
                 />
               </div>
