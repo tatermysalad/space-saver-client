@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 function Description({descriptionText}) {
   return (
     <section className="px-3 pt-2">
-      <p>{descriptionText}</p>
+      {descriptionText.split('\n').map((line, index) => (
+        <p key={index}>{line}</p>
+      ))}
     </section>
   );
 }

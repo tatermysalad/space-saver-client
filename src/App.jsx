@@ -18,6 +18,9 @@ import Register from './pages/Register';
 import {AuthProvider} from './auth/AuthContext';
 import {Toaster} from 'react-hot-toast';
 import ProtectedRoute from './auth/ProtectedRoute';
+import {injectSpeedInsights} from '@vercel/speed-insights';
+
+injectSpeedInsights();
 
 function App() {
   return (
