@@ -151,6 +151,7 @@ const Calendar = (props) => {
           slotEventOverlap={false}
           timeZone="local"
           datesSet={handleViewChange}
+          locale="en-GB"
         />
       </div>
     </section>
