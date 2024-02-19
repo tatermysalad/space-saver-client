@@ -21,7 +21,12 @@ function AddNewBookingModalContent({
 
   const onSubmit = async (data) => {
     try {
-      await createBooking(data);
+      const {room_id, ...rest} = data;
+      const newBooking = {
+        ...rest,
+        room_id: room_id.roomId, // extract roomId from room_id object
+      };
+      await createBooking(newBooking);
       handleClose();
       setTimeout(() => {
         window.location.reload();
@@ -33,11 +38,7 @@ function AddNewBookingModalContent({
 
   return (
     <>
-      <h4
-        className="mb-2 mt-[-.6rem] font-coplette text-3xl"
-      >
-        {heading}
-      </h4>
+      <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -82,15 +83,9 @@ function AddNewBookingModalContent({
                   options={roomOptions}
                   getOptionLabel={(option) => option.identifier || ''}
                   onChange={(event, item) => {
-                    onChange(item.roomId || '');
+                    onChange(item);
                   }}
-                  value={
-                    value
-                      ? roomOptions.find(
-                          (option) => option.identifier === value.identifier
-                        ) || ''
-                      : ''
-                  }
+                  value={value}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -119,6 +114,7 @@ function AddNewBookingModalContent({
                 <DatePicker
                   {...field}
                   id="date"
+                  format="DD/MM/YY"
                   value={field.value || null}
                   onChange={(value) => {
                     field.onChange(value);
