@@ -157,15 +157,15 @@ export async function deleteBooking(bookingId) {
 }
 
 export async function getAvailableTimeSlots() {
-  try {
+   try {
     const currentDate = new Date();
     const startTime = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       currentDate.getDate(),
-      7,
-      0,
-      0
+      currentDate.getHours(),
+      currentDate.getMinutes(),
+      currentDate.getSeconds()
     );
     const endTime = new Date(
       currentDate.getFullYear(),
