@@ -132,6 +132,7 @@ function Register() {
                   placeholder="notpassword123"
                   variant="outlined"
                   size="small"
+                  type="password"
                   fullWidth
                 />
               </div>
