@@ -134,7 +134,7 @@ const Calendar = (props) => {
       <div style={{flex: 1, width: '100%', height: '100%', padding: '5%'}}>
         <FullCalendar
           plugins={[timeGridPlugin]}
-          initialView="timeGridDay"
+          initialView="timeGridWeek"
           weekends={true}
           events={events}
           eventContent={renderEventContent}
@@ -147,7 +147,7 @@ const Calendar = (props) => {
           scrollTime="09:00:00"
           height="100%"
           displayEventTime={true}
-          slotDuration="00:15:00"
+          slotDuration="00:30:00"
           slotEventOverlap={false}
           timeZone="local"
           datesSet={handleViewChange}
