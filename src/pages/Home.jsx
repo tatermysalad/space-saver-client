@@ -55,7 +55,6 @@ function Home() {
   const roomsUpdated = rooms.map((room) => {
     return {
       name: room.name,
-      nextAvailable: '28/11/23',
       capacity: room.capacity,
     };
   });
@@ -145,15 +144,13 @@ function Home() {
             content={
               isNoBooking ? (
                 <EmptyDashContent message="No booking found" />
-              ) : (
-
-                bookAgainDate && bookAgainName ? 
+              ) : bookAgainDate && bookAgainName ? (
                 <Book
                   bookAgainName={bookAgainName}
                   bookAgainDate={bookAgainDate}
                 />
-                :
-                <EmptyDashContent message='Not enough data to show'/>
+              ) : (
+                <EmptyDashContent message="Not enough data to show" />
               )
             }
           />
@@ -194,7 +191,9 @@ function Home() {
               ) : (
                 <ListContent
                   contentType="upcomingBookings"
-                  bookings={bookings}
+                  bookings={bookings.filter(
+                    (booking) => new Date(booking.start_time) > new Date()
+                  )}
                 />
               )
             }

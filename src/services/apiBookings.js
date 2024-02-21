@@ -4,16 +4,21 @@ import api from './api';
 /**
  * Fetches bookings from the server.
  * @param {boolean} myBookingFilter - Filter bookings based on the current user's primary or invited status.
+ * @param {boolean} fromNow - Retrieve bookings from current time
  * @returns {Promise<Array>} - A promise that resolves to an array of bookings.
  */
-export async function getBookings(myBookingFilter = null) {
+export async function getBookings(myBookingFilter = null, fromNow = null) {
   try {
     let response;
+    let url;
     if (myBookingFilter) {
-      response = await api.get(`/bookings?primary_user=true&invited_user=true`);
+      url = `/bookings?primary_user=true&invited_user=true`;
+    } else if (fromNow) {
+      url = `/bookings?primary_user=true&invited_user=true&start_time=(${new Date()})`
     } else {
-      response = await api.get('/bookings');
+      url = '/bookings';
     }
+    response = await api.get(url)
 
     // Convert UTC times to local times
     const bookings = response.data.bookings.map((booking) => ({

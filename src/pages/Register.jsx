@@ -2,7 +2,10 @@ import {Button, TextField} from '@mui/material';
 import {Link, useNavigate} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
-import {registerUser} from '../services/apiUsers';
+import {loginUser, registerUser} from '../services/apiUsers';
+import {joinSpace} from '../services/apiSpaces';
+import toast from 'react-hot-toast';
+import useAuth from '../auth/useAuth';
 
 /**
  * Register is a component for user registration.
@@ -10,6 +13,7 @@ import {registerUser} from '../services/apiUsers';
  * Upon successful registration, it navigates the user to the login page.
  */
 function Register() {
+  const {login} = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -19,8 +23,30 @@ function Register() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await registerUser(data);
-    navigate('/login');
+    let code;
+    try {
+      code = data.space_code;
+    } catch {
+      console.log('space invite code not found');
+    }
+    let user = {
+      email: data.email,
+      password: data.password,
+    };
+    delete data.space_code;
+    let userRegister = await registerUser(data);
+
+    if (userRegister) {
+      let jwt = await loginUser(user);
+      if (jwt) {
+        await login(jwt);
+        if (code) {
+            await joinSpace(code);
+        }
+        toast.success(`Welcome to SpaceSaver ${data.first_name}`);
+        navigate('/');
+      }
+    }
   };
 
   return (
@@ -197,7 +223,7 @@ function Register() {
               required: 'Position is required',
             }}
             render={({field}) => (
-              <div className="mb-4 flex h-20 flex-col gap-2">
+              <div className="flex h-20 flex-col gap-2">
                 <label htmlFor="position">Position</label>
                 <TextField
                   {...field}
@@ -212,7 +238,26 @@ function Register() {
               </div>
             )}
           />
-
+          <Controller
+            name="space_code"
+            control={control}
+            defaultValue=""
+            render={({field}) => (
+              <div className="mb-4 flex h-20 flex-col gap-2">
+                <label htmlFor="space">Space Invite Code</label>
+                <TextField
+                  {...field}
+                  error={!!errors.space}
+                  helperText={errors.space?.message}
+                  id="space"
+                  placeholder="Abc12"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                />
+              </div>
+            )}
+          />
           <div className="mb-3">
             <Button variant="contained" size="large" type="submit">
               Create account

@@ -35,7 +35,10 @@ export async function loginUser(data) {
 export const registerUser = async (data) => {
   try {
     await api.post('/users/register', data);
-    toast.success('Register successful!');
+    toast.success(
+      'Registration successful! Taking you to your home screen...'
+    );
+    return true
   } catch (err) {
     if (err.response) {
       console.error('Register error:', err);
